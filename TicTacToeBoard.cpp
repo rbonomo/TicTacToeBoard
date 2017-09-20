@@ -1,4 +1,6 @@
 #include "TicTacToeBoard.h"
+#include <iostream>
+using namespace std;
 
 /**
  * Class for representing a 3x3 Tic-Tac-Toe game board, using the Piece enum
@@ -20,7 +22,12 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return turn == X ? turn = O : turn = X;
+  if (turn == X) {
+    turn = O;
+  } else {
+    turn = X;
+  }
+  return turn;
 }
 
 /**
@@ -35,7 +42,10 @@ Piece TicTacToeBoard::toggleTurn()
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
   if (getPiece(row, column) == Invalid || getWinner() != Invalid) return Invalid;
-  if (getPiece(row, column) == Blank) board[row][column] = turn;
+  if (getPiece(row, column) == Blank) {
+    board[row][column] = turn;
+    toggleTurn();
+  }
   return getPiece(row, column);
 }
 
@@ -63,11 +73,12 @@ Piece TicTacToeBoard::getWinner()
   for (int i = 0; i < BOARDSIZE; i++) {
     for (int j = 0; j < BOARDSIZE - 1; j++) {
       // Check if first two pieces match.
-      if (j == 0) isRowSame = getPiece(i, j) == getPiece(i, j + 1);
+      if (j == 0) {
+        isRowSame = getPiece(i, j) == getPiece(i, j + 1);
+        if (getPiece(i, j) == Blank) isRowSame = false;
+      }
       // Check if current two pieces and previous pieces match.
       else isRowSame = getPiece(i, j) == getPiece(i, j + 1) && isRowSame;
-      // Ignore Blank pieces.
-      if (getPiece(i, j) == Blank) isRowSame = false;
     }
     if (isRowSame) {
       winner = getPiece(i, 0);
@@ -79,39 +90,43 @@ Piece TicTacToeBoard::getWinner()
   for (int j = 0; j < BOARDSIZE; j++) {
     for (int i = 0; i < BOARDSIZE - 1; i++) {
       // Check if first two pieces match.
-      if (j == 0) isColumnSame = getPiece(i, j) == getPiece(i, j + 1);
+      if (i == 0) {
+        isColumnSame = getPiece(i, j) == getPiece(i + 1, j);
+        if (getPiece(i, j) == Blank) isColumnSame = false;
+      }
       // Check if current two pieces and previous pieces match.
-      else isColumnSame = getPiece(i, j) == getPiece(i, j + 1) && isColumnSame;
-      // Ignore Blank pieces.
-      if (getPiece(i, j) == Blank) isColumnSame = false;
+      else isColumnSame = getPiece(i, j) == getPiece(i + 1, j) && isColumnSame;
     }
     if (isColumnSame) {
       winner = getPiece(0, j);
     }
   }
 
-  // Check for diagonal wins.
+  // Check for diagonal top left to bottom right win.
   bool isDiagonalSame = false;
-  int i = 0;
-  for (int j = 0; j < BOARDSIZE - 1; j++) {
+  for (int i = 0; i < BOARDSIZE - 1; i++) {
     // Check if first two pieces match.
-    if (j == 0) isDiagonalSame = getPiece(i + j, j) == getPiece(i + j, j + 1);
+    if (i == 0) {
+      isDiagonalSame = getPiece(i, i) == getPiece(i + 1, i + 1);
+      if (getPiece(i, i) == Blank) isDiagonalSame = false;
+    }
     // Check if current two pieces and previous pieces match.
-    else isDiagonalSame = getPiece(i + j, j) == getPiece(i + j, j + 1) && isDiagonalSame;
-    // Ignore Blank pieces.
-    if (getPiece(i, j) == Blank) isDiagonalSame = false;
+    else isDiagonalSame = getPiece(i, i) == getPiece(i + 1, i + 1) && isDiagonalSame; 
   }
   if (isDiagonalSame) {
     winner = getPiece(0, 0);
   }
-  i = BOARDSIZE - 1;
-  for (int j = 0; j < BOARDSIZE - 1; j++) {
+  
+  // Check for diagonal top right to bottom left win.
+  isDiagonalSame = false;
+  for (int i = 0; i < BOARDSIZE - 1; i++) {
     // Check if first two pieces match.
-    if (j == 0) isDiagonalSame = getPiece(i - j, j) == getPiece(i - j, j + 1);
+    if (i == 0) {
+      isDiagonalSame = getPiece((BOARDSIZE - 1) - i, i) == getPiece((BOARDSIZE - 1) - i - 1, i + 1);
+      if (getPiece((BOARDSIZE - 1) - i, i) == Blank) isDiagonalSame = false;
+    }
     // Check if current two pieces and previous pieces match.
-    else isDiagonalSame = getPiece(i - j, j) == getPiece(i - j, j + 1) && isDiagonalSame;
-    // Ignore Blank pieces.
-    if (getPiece(i, j) == Blank) isDiagonalSame = false;
+    else isDiagonalSame = getPiece((BOARDSIZE - 1) - i, i) == getPiece((BOARDSIZE - 1) - i - 1, i + 1) && isDiagonalSame;
   }
   if (isDiagonalSame) {
     winner = getPiece(0, BOARDSIZE - 1);
