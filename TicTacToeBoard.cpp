@@ -30,6 +30,9 @@ Piece TicTacToeBoard::toggleTurn()
   return turn;
 }
 
+/* 
+  BUG: Outputting wrong peice. Shoud output the right piece.
+*/
 /**
  * Places the piece of the current turn on the board, returns what
  * piece is placed, and toggles which Piece's turn it is. placePiece does
@@ -46,7 +49,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
     board[row][column] = turn;
     toggleTurn();
   }
-  return getPiece(row, column);
+  return getPiece(column, row);
 }
 
 /**
