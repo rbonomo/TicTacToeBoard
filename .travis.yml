@@ -18,7 +18,7 @@ before_install:
 
 script:
   - make clean
-  - ./configure --enable-gcov && make && make check
+  - make
   - ./TicTacToeBoardTest
 
 after_success:
