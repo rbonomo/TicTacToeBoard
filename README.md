@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/rbonomo/TicTacToeBoard.svg?branch=master)](https://travis-ci.org/rbonomo/TicTacToeBoard)
+[![Coverage Status](https://coveralls.io/repos/github/rbonomo/TicTacToeBoard/badge.svg?branch=master)](https://coveralls.io/github/rbonomo/TicTacToeBoard?branch=master)
 
 # TicTacToeBoard
 
