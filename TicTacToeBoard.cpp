@@ -45,6 +45,8 @@ Piece TicTacToeBoard::placePiece(int row, int column)
   if (getPiece(row, column) == Blank) {
     board[row][column] = turn;
     toggleTurn();
+  } else {
+    return Invalid;
   }
   return getPiece(row, column);
 }
@@ -56,7 +58,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
   // If position is out of board bounds, then return Invalid.
-  if (row > BOARDSIZE || row < 0 || column > BOARDSIZE || column < 0) return Invalid;
+  if (row >= BOARDSIZE || row < 0 || column >= BOARDSIZE || column < 0) return Invalid;
   return board[row][column];
 }
 
@@ -111,12 +113,12 @@ Piece TicTacToeBoard::getWinner()
       if (getPiece(i, i) == Blank) isDiagonalSame = false;
     }
     // Check if current two pieces and previous pieces match.
-    else isDiagonalSame = getPiece(i, i) == getPiece(i + 1, i + 1) && isDiagonalSame; 
+    else isDiagonalSame = getPiece(i, i) == getPiece(i + 1, i + 1) && isDiagonalSame;
   }
   if (isDiagonalSame) {
     winner = getPiece(0, 0);
   }
-  
+
   // Check for diagonal top right to bottom left win.
   isDiagonalSame = false;
   for (int i = 0; i < BOARDSIZE - 1; i++) {
